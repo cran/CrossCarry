@@ -1,0 +1,17 @@
+citHeader("To cite CrossCarry in publications use:")
+
+bibentry(
+  bibtype    = "Article",
+  title    = "A correlation structure for the analysis of Gaussian and non-Gaussian responses in crossover experimental designs with repeated measures",
+  author   = c(person("Nelson Alirio", "Cruz Gutierrez", role = c("aut", "cre","cph"),
+                      email = "neacruzgu@unal.edu.co"),
+                     person("Oscar Orlando", "Melo", role = "aut"),
+                     person("Carlos Alberto", "Martinez", role="aut")),
+  journal  = "Statistical Papers",
+  year     = "2023",
+  volume   = "65",
+  number   = "1",
+  pages    = "1--28",
+  url      = "https://doi.org/10.1007/s00362-022-01391-z"
+)
+

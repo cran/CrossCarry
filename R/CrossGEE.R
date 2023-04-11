@@ -1,0 +1,70 @@
+#' @title Run a GEE model for data from a crossover experiment
+#'
+#' @description Provides a GEE model for the data of a crossover design with S
+#' sequences of T periods. There must be one observation of each
+#' experimental unit in each period.
+#'
+#'
+#' @param response A character string specifying the name of the response variable of the crossover
+#' experimental design
+#' @param period A character string specifying the name of vector with the
+#' observation period of the responses of  the crossover experimental design
+#' @param treatment A character string specifying the name of vector with the
+#' treatment applied at each observation of the crossover experimental design
+#' @param id A  character string specifying the name of vector which identifies
+#' the experimental units. The length of ‘id’
+#'  should be the same as the number of observations. Data are assumed to be sorted so
+#'   that observations on each cluster appear as contiguous rows in data. If data
+#'   is not sorted this way, the function will not identify the clusters correctly.
+#'   If data is not sorted this way, a warning will be issued.
+#' @param carry A vector of  character string specifying the name set of dummy
+#'  variables that indicates the treatment applied
+#' in the previous period of each experimental unit. They must be 0 in period 1
+#' @param covar A vector of  character string specifying the name of possible
+#' covariates of the crossover experimental design
+#' @param data A data frame with all the variables of the crossover experimental design
+#' @param family See corresponding documentation to \code{glm}
+#' @param correlation 	a character string specifying the correlation structure.
+#'  The following are permitted: "independence", "exchangeable", "ar1" and
+#'  "unstructured"
+#' @param formula A formula related the response variable with the explanatory
+#'  variables. If it is \code{NULL}, formula
+#'  \code{response~period+treatment+carry+covar} will be evaluated
+#' @return \code{QIC} The QIC of the models: The model are fitted by \code{geeglm}
+#' @return \code{model} The model fitted by \code{geeglm}.
+#' @examples
+#' data(Water)
+#' model <- CrossGEE(response="LCC", covar=c("Age"), period="Period",
+#'                   treatment = "Treatment", id="ID", carry="Carry_Agua",
+#'                   family=gaussian(),correlation ="ar1" ,data=Water)
+#'
+#' model$QIC
+#' model$model
+#'
+#'summary(model$model)
+#' @export
+#' @importFrom dplyr "%>%"
+#' @importFrom stats "gaussian"
+
+CrossGEE <- function(response,period,treatment,id,carry, covar=NULL ,data,
+                     family=gaussian(), correlation="independence",
+                     formula=NULL){
+  totalVar <- c(response, period, treatment,carry, covar, id)
+  if(sum(totalVar %in% names(data))!=length(totalVar)){
+    stop("Some variables are not present in data")
+  }
+  data <- data %>% dplyr::select_at(totalVar) %>%
+    dplyr::arrange_at(c(id, period)) %>%
+    data.frame() %>% stats::na.exclude()
+  data["id"] <- data[id]
+  if(is.null(formula)){
+    form1 <- stats::as.formula(paste(response,
+                              paste(c(period, treatment,carry, covar),
+                                    collapse=" + "), sep=" ~ "))
+  }else{
+    form1 <- formula}
+  model1 <- geepack::geeglm(formula=form1, family=family, corstr = correlation,
+                            id=id, data=data)
+  QICmodels <- data.frame(geepack::QIC(model1))
+  return(list(QIC =QICmodels, model=model1))
+}

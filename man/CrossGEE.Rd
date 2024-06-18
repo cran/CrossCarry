@@ -3,6 +3,9 @@
 \name{CrossGEE}
 \alias{CrossGEE}
 \title{Run a GEE model for data from a crossover experiment}
+\source{
+https://doi.org/10.1111/stan.12295
+}
 \usage{
 CrossGEE(
   response,
@@ -73,4 +76,10 @@ model$QIC
 model$model
 
 summary(model$model)
+}
+\references{
+Cruz, N. A., López Pérez, L. A., & Melo, O. O. (2023).
+Analysis of cross-over experiments with count data in
+the presence of carry-over effects. Statistica Neerlandica,
+ 77(4), 516-542.
 }

@@ -120,5 +120,5 @@ plot
 \references{
 Cruz Gutierrez NA, Melo OO, Martinez CA. Semiparametric generalized
  estimating equations for repeated measurements in cross-over designs.
-  Statistical Methods in Medical Research. 2023;0(0).
+  Statistical Methods in Medical Research, 2023;32(5):1033-1050.
 }

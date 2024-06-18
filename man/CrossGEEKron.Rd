@@ -115,5 +115,5 @@ summary(model2$model)
 Cruz, N.A., Melo, O.O. & Martinez, C.A.
  A correlation structure for the analysis of Gaussian and non-Gaussian
   responses in crossover experimental designs with repeated measures.
-   Statistical Papers (2023), 1--28.
+   Statistical Papers 65, 263–290 (2024)
 }

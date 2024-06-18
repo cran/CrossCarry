@@ -32,6 +32,11 @@
 #'  \code{response~period+treatment+carry+covar} will be evaluated
 #' @return \code{QIC} The QIC of the models: The model are fitted by \code{geeglm}
 #' @return \code{model} The model fitted by \code{geeglm}.
+#' @references Cruz, N. A., López Pérez, L. A., & Melo, O. O. (2023).
+#' Analysis of cross-over experiments with count data in
+#' the presence of carry-over effects. Statistica Neerlandica,
+#'  77(4), 516-542.
+#' @source https://doi.org/10.1111/stan.12295
 #' @examples
 #' data(Water)
 #' model <- CrossGEE(response="LCC", covar=c("Age"), period="Period",
@@ -56,7 +61,7 @@ CrossGEE <- function(response,period,treatment,id,carry, covar=NULL ,data,
   data <- data %>% dplyr::select_at(totalVar) %>%
     dplyr::arrange_at(c(id, period)) %>%
     data.frame() %>% stats::na.exclude()
-  data["id"] <- data[id]
+  data["id"] <- as.numeric(as.factor(data[,id]))
   if(is.null(formula)){
     form1 <- stats::as.formula(paste(response,
                               paste(c(period, treatment,carry, covar),

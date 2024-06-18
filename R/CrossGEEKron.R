@@ -45,7 +45,7 @@
 #' @references Cruz, N.A., Melo, O.O. & Martinez, C.A.
 #'  A correlation structure for the analysis of Gaussian and non-Gaussian
 #'   responses in crossover experimental designs with repeated measures.
-#'    Statistical Papers (2023), 1--28.
+#'    Statistical Papers 65, 263–290 (2024)
 #' @source https://doi.org/10.1007/s00362-022-01391-z
 #' @examples
 #' data(Arterial)
@@ -93,6 +93,9 @@ CrossGEEKron <- function(response,period,treatment,id,
     dplyr::arrange_at(c(id, period, time)) %>%
     data.frame() %>% stats::na.exclude() %>% data.frame()
   data["id"] <- data[id]
+  data <- data %>% dplyr::mutate(id = as.numeric(factor(id)))
+  data[id] <- data["id"]
+  data["id"] <- as.numeric(as.factor(data[,id]))
   if(is.null(formula)){
     form1 <- stats::as.formula(paste(response,
                               paste(c(period, treatment,carry, time, covar),

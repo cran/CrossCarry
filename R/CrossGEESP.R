@@ -48,7 +48,7 @@
 #' of axes and other graphic parameters of that library.
 #' @references Cruz Gutierrez NA, Melo OO, Martinez CA. Semiparametric generalized
 #'  estimating equations for repeated measurements in cross-over designs.
-#'   Statistical Methods in Medical Research. 2023;0(0).
+#'   Statistical Methods in Medical Research, 2023;32(5):1033-1050.
 #' @source https://doi.org/10.1177/09622802231158736
 #' @examples
 #' data(Arterial)
@@ -96,7 +96,7 @@ CrossGEESP <- function(response,period,treatment,id,
     dplyr::arrange_at(c(id, period, time)) %>%
     data.frame() %>% stats::na.exclude() %>% data.frame()
 
-  data["id"] <- data[id]
+  data["id"] <- as.numeric(as.factor(data[,id]))
   if(is.null(formula)){
     form1 <- stats::as.formula(paste(response,
                               paste(c(period, treatment, covar),
@@ -190,24 +190,15 @@ CrossGEESP <- function(response,period,treatment,id,
                corstr = "fixed", id=Per_id))
   graphs <- list()
   alpha <- stats::coef(modTemp2)[2:(ncol(splines1)+1)]
-  ZZ <- dataTemp1[,2:(ncol(splines1)+1)]
-  TT <- as.matrix(ZTemp)%*%alphaTemp
-  nTimes <-  unique(Time_total)
-  yaxis <- as.matrix(ZZ[1:length(nTimes),])%*%t(t(alpha))
-  xaxis <- rep(nTimes, nrow(dataTemp2)/length(nTimes))
-  yaxis <- rep(yaxis, nrow(dataTemp2)/length(nTimes))
-  modelTemp5 <- stats::lm(yaxis~splines::bs(xaxis, knots = 10))
-  xaxis <- seq(min(nTimes),max(nTimes),(max(nTimes)-min(nTimes))/100)
-  dataTemp5 <- stats::predict(modelTemp5, newdata = data.frame(xaxis=xaxis),
-                       interval = "prediction")
-  liminf <- (dataTemp5[,1]-dataTemp5[,2])/sqrt(nrow(dataTemp2)/length(nTimes))
-  limsup <- (-dataTemp5[,1]+dataTemp5[,3])/sqrt(nrow(dataTemp2)/length(nTimes))
-  dataTemp5[,2] <- dataTemp5[,1]-liminf
-  dataTemp5[,3] <-dataTemp5[,1]+limsup
-
-  dataTemp5=data.frame(dataTemp5)
-  colnames(dataTemp5)=c("Estimate_time_effect", "lower_band","upper_band")
-  dataTemp5$Time =xaxis
+  ZZ <- as.matrix(dataTemp1[,2:(ncol(splines1)+1)])
+  varTemp <- modTemp2$robust.variance[2:(ncol(splines1)+1), 2:(ncol(splines1)+1)]
+  TT <- as.matrix(ZZ)%*%alpha
+  varTT <- ZZ %*% varTemp %*% t(ZZ)
+  dataTemp5 <- data.frame(Time = Time_total, Y_hat = TT, VarY_hat =diag(varTT)) %>%
+    base::unique() %>% dplyr::mutate(liminf=Y_hat - 1.96*sqrt(VarY_hat),
+                                     limsup=Y_hat + 1.96*sqrt(VarY_hat)) %>%
+    dplyr::select(Time, Y_hat, liminf, limsup)
+  colnames(dataTemp5)=c("Time", "Estimate_time_effect", "lower_band","upper_band")
   plot1 <- dataTemp5 %>% ggplot2::ggplot( ggplot2::aes(x = Time, y =Estimate_time_effect)) +
     ggplot2::geom_ribbon(ggplot2::aes(ymin = lower_band, ymax = upper_band), alpha=0.4) +
     ggplot2::geom_line(color="black",lwd=.8, linetype='solid') +
@@ -218,26 +209,18 @@ CrossGEESP <- function(response,period,treatment,id,
 
   for(ii in 1:(length(carry))){
     alpha <- stats::coef(modTemp2)[(2+ncol(splines1)*ii):(1+ncol(splines1)*(ii+1))]
-    ZZ <- dataTemp1[data[, carry[ii]]==1,
-                    (2+ncol(splines1)*ii):(1+ncol(splines1)*(ii+1))]
-    TT <- as.matrix(ZZ)%*%alpha
-    factorC <- min(table(data[,carry[ii]]))
-    nTimes <-  unique(Time_total)
-    yaxis <- as.matrix(ZZ[1:length(nTimes),])%*%t(t(alpha))
-    xaxis <- rep(nTimes, factorC/length(nTimes))
-    yaxis <- rep(yaxis, factorC/length(nTimes))
-    modelTemp5 <- stats::lm(yaxis~splines::bs(xaxis, knots = 10))
-    xaxis <- seq(min(nTimes),max(nTimes),(max(nTimes)-min(nTimes))/100)
-    dataTemp5 <- stats::predict(modelTemp5, newdata = data.frame(xaxis=xaxis),
-                         interval = "prediction")
-    liminf <- (dataTemp5[,1]-dataTemp5[,2])/sqrt(factorC/length(nTimes))
-    limsup <- (-dataTemp5[,1]+dataTemp5[,3])/sqrt(factorC/length(nTimes))
-    dataTemp5[,2] <- dataTemp5[,1]-liminf
-    dataTemp5[,3] <-dataTemp5[,1]+limsup
-
-    dataTemp5=data.frame(dataTemp5)
-    colnames(dataTemp5)=c("Estimate_time_effect", "lower_band","upper_band")
-    dataTemp5$Time =xaxis
+    ZZ <- as.matrix(dataTemp1[data[, carry[ii]]==1,
+                    (2+ncol(splines1)*ii):(1+ncol(splines1)*(ii+1))])
+    varTemp <- modTemp2$robust.variance[(2+ncol(splines1)*ii):(1+ncol(splines1)*(ii+1)),
+                                        (2+ncol(splines1)*ii):(1+ncol(splines1)*(ii+1))]
+    TT <- ZZ%*%alpha
+    varTT <- ZZ %*% varTemp %*% t(ZZ)
+    dataTemp5 <- data.frame(Time = Time_total[data[, carry[ii]]==1],
+                            Y_hat = TT, VarY_hat =diag(varTT)) %>%
+      base::unique() %>% dplyr::mutate(liminf=Y_hat - 1.96*sqrt(VarY_hat),
+                                       limsup=Y_hat + 1.96*sqrt(VarY_hat)) %>%
+      dplyr::select(Time, Y_hat, liminf, limsup)
+    colnames(dataTemp5)=c("Time", "Estimate_time_effect", "lower_band","upper_band")
     plot1 <- dataTemp5 %>% ggplot2::ggplot(ggplot2::aes(x = Time, y =Estimate_time_effect)) +
       ggplot2::geom_ribbon(ggplot2::aes(ymin = lower_band, ymax = upper_band), alpha=0.4) +
       ggplot2::geom_line(color="black",lwd=.8, linetype='solid') +

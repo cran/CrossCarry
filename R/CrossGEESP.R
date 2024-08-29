@@ -28,10 +28,11 @@
 #' covariates of the crossover experimental design
 #' @param data A data frame with all the variables of the crossover experimental design
 #' @param family See corresponding documentation to \code{glm}
-#' @param correlation character string specifying the correlation within periods
-#'  structure.
-#'  The following are permitted: "independence", "exchangeable", "ar1" and
-#'  "unstructured"
+#' @param correlation 	a character string specifying the correlation structure.
+#'   The following are permitted: "independence", "fixed", "stat_M_dep",
+#'  "non_stat_M_dep", "exchangeable", "AR-M" and "unstructured"
+#' @param Mv When correlation is "stat_M_dep", "non_stat_M_dep", or "AR-M"
+#'   then Mv must be specified.
 #' @param formula A formula related the response variable with the explanatory
 #'  variables. If it is \code{NULL}, formula
 #'  \code{response~period+treatment+carry+time+covar} will be evaluated.
@@ -65,7 +66,7 @@
 #'
 #' model2 <- CrossGEESP(response = "Pressure", treatment = "Treatment",
 #'                      period = "Period", id="Subject", time="Time",
-#'                      carry=carrydata$carryover,data=data, correlation = "ar1")
+#'                      carry=carrydata$carryover,data=data, correlation = "AR-M")
 #'
 #'
 #' model1$QIC
@@ -84,7 +85,7 @@
 CrossGEESP <- function(response,period,treatment,id,
                          time,carry, covar=NULL,data,
                          family=gaussian, correlation="independence",
-                         formula =NULL,tol = 1e-4, niter=100, nodes=NULL){
+                         formula =NULL,tol = 1e-4, niter=100, nodes=NULL, Mv=1){
   data["Per_id"]=as.numeric(as.factor(paste(data[,id], data[,period])))
   totalVar <- c(response, period, treatment,carry, covar, id)
   if(sum(totalVar %in% names(data))!=length(totalVar)){
@@ -232,8 +233,9 @@ CrossGEESP <- function(response,period,treatment,id,
 
   names(graphs) <- c(time, carry)
 
-  model1 <- suppressMessages(geepack::geeglm(form3,data=dataTemp2,
+  model1 <- suppressMessages(gee::gee(form3,data=dataTemp2,
                                              corstr =correlation, id=Per_id))
-  QICmodels <- data.frame(geepack::QIC(model1))
+  QICmodels <- data.frame(computeqic(model1))
+  names(QICmodels) <- "QICs"
   return(list(QIC =QICmodels, model=model1, graphs=graphs))
 }

@@ -25,8 +25,10 @@
 #' @param data A data frame with all the variables of the crossover experimental design
 #' @param family See corresponding documentation to \code{glm}
 #' @param correlation 	a character string specifying the correlation structure.
-#'  The following are permitted: "independence", "exchangeable", "ar1" and
-#'  "unstructured"
+#'   The following are permitted: "independence", "fixed", "stat_M_dep",
+#'  "non_stat_M_dep", "exchangeable", "AR-M" and "unstructured"
+#' @param Mv When correlation is "stat_M_dep", "non_stat_M_dep", or "AR-M"
+#'   then Mv must be specified.
 #' @param formula A formula related the response variable with the explanatory
 #'  variables. If it is \code{NULL}, formula
 #'  \code{response~period+treatment+carry+covar} will be evaluated
@@ -41,7 +43,7 @@
 #' data(Water)
 #' model <- CrossGEE(response="LCC", covar=c("Age"), period="Period",
 #'                   treatment = "Treatment", id="ID", carry="Carry_Agua",
-#'                   family=gaussian(),correlation ="ar1" ,data=Water)
+#'                   family=gaussian(),correlation ="AR-M", Mv=1 ,data=Water)
 #'
 #' model$QIC
 #' model$model
@@ -53,7 +55,7 @@
 
 CrossGEE <- function(response,period,treatment,id,carry, covar=NULL ,data,
                      family=gaussian(), correlation="independence",
-                     formula=NULL){
+                     formula=NULL, Mv=1){
   totalVar <- c(response, period, treatment,carry, covar, id)
   if(sum(totalVar %in% names(data))!=length(totalVar)){
     stop("Some variables are not present in data")
@@ -68,8 +70,9 @@ CrossGEE <- function(response,period,treatment,id,carry, covar=NULL ,data,
                                     collapse=" + "), sep=" ~ "))
   }else{
     form1 <- formula}
-  model1 <- geepack::geeglm(formula=form1, family=family, corstr = correlation,
-                            id=id, data=data)
-  QICmodels <- data.frame(geepack::QIC(model1))
+  model1 <- gee::gee(formula=form1, family=family, corstr = correlation,
+                            id=id, data=data, Mv=Mv)
+  QICmodels <- data.frame(computeqic(model1))
+  names(QICmodels) <- "QICs"
   return(list(QIC =QICmodels, model=model1))
 }

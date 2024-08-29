@@ -17,7 +17,8 @@ CrossGEE(
   data,
   family = gaussian(),
   correlation = "independence",
-  formula = NULL
+  formula = NULL,
+  Mv = 1
 )
 }
 \arguments{
@@ -49,12 +50,15 @@ covariates of the crossover experimental design}
 \item{family}{See corresponding documentation to \code{glm}}
 
 \item{correlation}{a character string specifying the correlation structure.
-The following are permitted: "independence", "exchangeable", "ar1" and
-"unstructured"}
+ The following are permitted: "independence", "fixed", "stat_M_dep",
+"non_stat_M_dep", "exchangeable", "AR-M" and "unstructured"}
 
 \item{formula}{A formula related the response variable with the explanatory
 variables. If it is \code{NULL}, formula
 \code{response~period+treatment+carry+covar} will be evaluated}
+
+\item{Mv}{When correlation is "stat_M_dep", "non_stat_M_dep", or "AR-M"
+then Mv must be specified.}
 }
 \value{
 \code{QIC} The QIC of the models: The model are fitted by \code{geeglm}
@@ -70,7 +74,7 @@ experimental unit in each period.
 data(Water)
 model <- CrossGEE(response="LCC", covar=c("Age"), period="Period",
                   treatment = "Treatment", id="ID", carry="Carry_Agua",
-                  family=gaussian(),correlation ="ar1" ,data=Water)
+                  family=gaussian(),correlation ="AR-M", Mv=1 ,data=Water)
 
 model$QIC
 model$model

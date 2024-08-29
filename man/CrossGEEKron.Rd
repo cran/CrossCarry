@@ -21,7 +21,8 @@ CrossGEEKron(
   correlation = "independence",
   formula = NULL,
   tol = 1e-04,
-  niter = 100
+  niter = 100,
+  Mv
 )
 }
 \arguments{
@@ -55,10 +56,9 @@ covariates of the crossover experimental design}
 
 \item{family}{See corresponding documentation to \code{glm}.}
 
-\item{correlation}{character string specifying the correlation within periods
-structure.
-The following are permitted: "independence", "exchangeable", "ar1" and
-"unstructured".}
+\item{correlation}{a character string specifying the correlation structure.
+ The following are permitted: "independence", "fixed", "stat_M_dep",
+"non_stat_M_dep", "exchangeable", "AR-M" and "unstructured"}
 
 \item{formula}{A formula related the response variable with the explanatory
  variables. If it is \code{NULL} the formula,
@@ -68,6 +68,9 @@ The following are permitted: "independence", "exchangeable", "ar1" and
 
 \item{niter}{the maximum number of iterations.
 \code{response~period+treatment+carry+time+covar} will be evaluated}
+
+\item{Mv}{When correlation is "stat_M_dep", "non_stat_M_dep", or "AR-M"
+then Mv must be specified.}
 }
 \value{
 \code{QIC} The QIC of the model: The model are fitted by \code{geeglm}
@@ -94,7 +97,7 @@ data <- carrydata$data
 carry <- carrydata$carryover
 model <- CrossGEEKron(response = "Pressure", treatment = "Treatment",
 period = "Period", id="Subject", time="Time",
- carry=c("Carry_B","Carry_C"),data=data, correlation = "ar1")
+ carry=c("Carry_B","Carry_C"),data=data, correlation = "AR-M", Mv=1)
 
 model$QIC
 model$Within
@@ -103,7 +106,7 @@ summary(model$model)
 model2 <- CrossGEEKron(response = "Pressure", treatment = "Treatment",
  period = "Period", id="Subject", time="Time",
  carry=c("Carry_B","Carry_C"), data=data,
- correlation = "ar1",formula=Pressure ~ Treatment+
+ correlation = "AR-M", Mv=1,formula=Pressure ~ Treatment+
  Period+ Carry_B+Carry_C)
 
 model2$QIC

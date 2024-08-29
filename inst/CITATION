@@ -8,10 +8,9 @@ bibentry(
                      person("Oscar Orlando", "Melo", role = "aut"),
                      person("Carlos Alberto", "Martinez", role="aut")),
   journal  = "Statistical Papers",
-  year     = "2023",
+  year     = "2024",
   volume   = "65",
-  number   = "1",
-  pages    = "1--28",
+  pages    = "263--290",
   url      = "https://doi.org/10.1007/s00362-022-01391-z"
 )
 

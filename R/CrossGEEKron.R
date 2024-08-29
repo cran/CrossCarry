@@ -27,10 +27,11 @@
 #' covariates of the crossover experimental design
 #' @param data A data frame with all the variables of the crossover experimental design
 #' @param family See corresponding documentation to \code{glm}.
-#' @param correlation character string specifying the correlation within periods
-#'  structure.
-#'  The following are permitted: "independence", "exchangeable", "ar1" and
-#'  "unstructured".
+#' @param correlation 	a character string specifying the correlation structure.
+#'   The following are permitted: "independence", "fixed", "stat_M_dep",
+#'  "non_stat_M_dep", "exchangeable", "AR-M" and "unstructured"
+#' @param Mv When correlation is "stat_M_dep", "non_stat_M_dep", or "AR-M"
+#'   then Mv must be specified.
 #' @param formula A formula related the response variable with the explanatory
 #'  variables. If it is \code{NULL} the formula,
 #' \code{response~period+treatment+carry+time+covar} will be evaluated
@@ -57,7 +58,7 @@
 #' carry <- carrydata$carryover
 #' model <- CrossGEEKron(response = "Pressure", treatment = "Treatment",
 #' period = "Period", id="Subject", time="Time",
-#'  carry=c("Carry_B","Carry_C"),data=data, correlation = "ar1")
+#'  carry=c("Carry_B","Carry_C"),data=data, correlation = "AR-M", Mv=1)
 #'
 #' model$QIC
 #' model$Within
@@ -66,7 +67,7 @@
 #' model2 <- CrossGEEKron(response = "Pressure", treatment = "Treatment",
 #'  period = "Period", id="Subject", time="Time",
 #'  carry=c("Carry_B","Carry_C"), data=data,
-#'  correlation = "ar1",formula=Pressure ~ Treatment+
+#'  correlation = "AR-M", Mv=1,formula=Pressure ~ Treatment+
 #'  Period+ Carry_B+Carry_C)
 #'
 #' model2$QIC
@@ -82,7 +83,7 @@
 CrossGEEKron <- function(response,period,treatment,id,
                          time,carry, covar=NULL,data,
                          family=gaussian(), correlation="independence",
-                         formula =NULL,tol = 1e-4, niter=100){
+                         formula =NULL,tol = 1e-4, niter=100, Mv){
   data["Per_id"]=as.numeric(as.factor(paste(data[,id], data[,period])))
   totalVar <- c(response, period, treatment,carry, covar, id)
   if(sum(totalVar %in% names(data))!=length(totalVar)){
@@ -264,11 +265,11 @@ CrossGEEKron <- function(response,period,treatment,id,
   if(counter >= niter){
     stop(("Convergence not achieved, change the formula"))
   }
-  model1 <- geepack::geeglm(form1, data=data, family=gaussian,
-                            corstr = "userdefined",
-                            zcor=rep(RR[upper.tri(RR)],n_suj),
-                            id=id)
-  QICmodels <- data.frame(geepack::QIC(model1))
+  model1 <- gee::gee(formula=form1, family=family,R=RR,
+                     corstr = "fixed",
+                     id=id, data=data)
+  QICmodels <- data.frame(computeqic(model1))
+  names(QICmodels) <- "QICs"
   return(list(QIC =QICmodels, model=model1, Within=Ralpha, Between=Psi))
 
 }

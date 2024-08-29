@@ -22,7 +22,8 @@ CrossGEESP(
   formula = NULL,
   tol = 1e-04,
   niter = 100,
-  nodes = NULL
+  nodes = NULL,
+  Mv = 1
 )
 }
 \arguments{
@@ -56,10 +57,9 @@ covariates of the crossover experimental design}
 
 \item{family}{See corresponding documentation to \code{glm}}
 
-\item{correlation}{character string specifying the correlation within periods
-structure.
-The following are permitted: "independence", "exchangeable", "ar1" and
-"unstructured"}
+\item{correlation}{a character string specifying the correlation structure.
+ The following are permitted: "independence", "fixed", "stat_M_dep",
+"non_stat_M_dep", "exchangeable", "AR-M" and "unstructured"}
 
 \item{formula}{A formula related the response variable with the explanatory
 variables. If it is \code{NULL}, formula
@@ -71,6 +71,9 @@ variables. If it is \code{NULL}, formula
 
 \item{nodes}{Number of nodes in the estimation of the splines.
 By default, the base 2 logarithm of the number of observations per period is used.}
+
+\item{Mv}{When correlation is "stat_M_dep", "non_stat_M_dep", or "AR-M"
+then Mv must be specified.}
 }
 \value{
 \code{QIC} The QIC of the model: The model are fitted by \code{geeglm}
@@ -104,7 +107,7 @@ model1 <- CrossGEESP(response = "Pressure", treatment = "Treatment",
 
 model2 <- CrossGEESP(response = "Pressure", treatment = "Treatment",
                      period = "Period", id="Subject", time="Time",
-                     carry=carrydata$carryover,data=data, correlation = "ar1")
+                     carry=carrydata$carryover,data=data, correlation = "AR-M")
 
 
 model1$QIC

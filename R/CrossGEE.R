@@ -48,6 +48,9 @@
 #' model$QIC
 #' model$model
 #'
+#' ## Aproximate p-values
+#' (pvalues <- 2 * pnorm(abs(coef(summary(model$model))[,5]), lower.tail = FALSE))
+#'
 #'summary(model$model)
 #' @export
 #' @importFrom dplyr "%>%"

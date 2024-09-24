@@ -103,6 +103,10 @@ model$QIC
 model$Within
 model$Between
 summary(model$model)
+
+## Aproximate p-values for model
+(pvalues <- 2 * pnorm(abs(coef(summary(model$model))[,5]), lower.tail = FALSE))
+
 model2 <- CrossGEEKron(response = "Pressure", treatment = "Treatment",
  period = "Period", id="Subject", time="Time",
  carry=c("Carry_B","Carry_C"), data=data,
@@ -113,6 +117,8 @@ model2$QIC
 model2$Within
 model2$Between
 summary(model2$model)
+
+
 }
 \references{
 Cruz, N.A., Melo, O.O. & Martinez, C.A.

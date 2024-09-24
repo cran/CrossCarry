@@ -114,6 +114,11 @@ model1$QIC
 model2$QIC
 summary(model1$model)
 summary(model2$model)
+
+## Aproximate p-values for model 2
+
+(pvalues <- 2 * pnorm(abs(coef(summary(model2$model))[,5]), lower.tail = FALSE))
+
 model1$graph[[1]]
 model1$graph[[2]]
 plot <- model1$graph[[1]] + ggplot2::xlab("Time in minutes")+

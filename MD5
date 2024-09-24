@@ -1,10 +1,10 @@
-5c0ba0e56c4333982cd7cd7d88509ea0 *DESCRIPTION
+754416ca37980efb1d22678737b208f5 *DESCRIPTION
 8099c24a6c273a86f9469b48ed8fd0b8 *NAMESPACE
 f7e5b022bcb464eeb1f8651988588c2c *R/Arterial.R
 d41d8cd98f00b204e9800998ecf8427e *R/CrossCarry.R
-bbca21f08d65fddaeb022dac5def9129 *R/CrossGEE.R
-a7ec1ab8036883d61d98b73ebd6235a1 *R/CrossGEEKron.R
-de08b6a755aebadb72dff1cc598ba1b5 *R/CrossGEESP.R
+a1455388ac0c391b1d116397147b168d *R/CrossGEE.R
+70fa8faaedaa3f0e8302c516a79ec87b *R/CrossGEEKron.R
+435d9d5143a972dd89f1623da2c8756b *R/CrossGEESP.R
 9d4d892e77f57ac578df90cf913a4995 *R/Water.R
 b3d99109b31a3c4f44f060bd5de111bd *R/computeqic.R
 7fa9ca798a21c321f83061cdbebf6f23 *R/createCarry.R
@@ -13,9 +13,9 @@ ef2cba428da351556d4b33e5cef2b2bb *data/Arterial.rda
 a9b8f8c64f4cc5cb29fab4422dc01abd *data/Water.rda
 cf5d9c39b54b909732beed839863446e *inst/CITATION
 5f7882dd5810922a5183e7f7fe5242a4 *man/Arterial.Rd
-98953c6d64dbc9cd25ab92d46a430df5 *man/CrossGEE.Rd
-5f97e4fd544921fd500f3ca8f5834d15 *man/CrossGEEKron.Rd
-ae791103b3ed8c26661c3008bb667e44 *man/CrossGEESP.Rd
+a758ec5d9ce2bf9a4b626cd7e2305355 *man/CrossGEE.Rd
+6080d12f44255d3411a74074a1948637 *man/CrossGEEKron.Rd
+e55c86f3fd11350be6d18ece62c29821 *man/CrossGEESP.Rd
 956de86a6fa007bffba2b41d8c5a09f6 *man/Water.Rd
 1fae76ceb3ce701246777d0098e60126 *man/computeqic.Rd
 2aa8cc243071d32eac3e1260267af101 *man/createCarry.Rd

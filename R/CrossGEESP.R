@@ -147,7 +147,7 @@ CrossGEESP <- function(response,period,treatment,id,
 
   diference <- 1
   counter <- 0
-  modTemp <- suppressMessages(gee::gee(form1,data=data,
+  modTemp <- suppressMessages(gee::gee(form1,data=data,family=family,
                                   corstr = correlation1, id=Per_id))
 
   while(diference>tol & counter < niter){
@@ -161,7 +161,7 @@ CrossGEESP <- function(response,period,treatment,id,
     form2 <- stats::as.formula(paste(response,
                               paste(c(varTempSp, "Xbeta"),
                                     collapse=" + "), sep=" ~ "))
-    modTemp <- suppressMessages(gee::gee(form2, data=dataTemp1,
+    modTemp <- suppressMessages(gee::gee(form2, data=dataTemp1,family=family,
                                     R=R_alpha, maxiter = 10,
                    corstr = "fixed", id=Per_id))
     alpha <- stats::coef(modTemp)[2:(ncol(splines1)+1)]
@@ -181,7 +181,7 @@ CrossGEESP <- function(response,period,treatment,id,
                                       paste("offset(",colnames(TT),")",sep="" )),
                                     collapse=" + "), sep=" ~ "))
 
-    modTemp <- suppressMessages(gee::gee(form3,data=dataTemp2,
+    modTemp <- suppressMessages(gee::gee(form3,data=dataTemp2,family=family,
                                     corstr =correlation1, id=Per_id))
     summary(modTemp)
     diference <- sum((beta0-stats::coef(modTemp))^2)
@@ -192,7 +192,8 @@ CrossGEESP <- function(response,period,treatment,id,
     stop(("Convergence not achieved, change the formula"))
   }
 
-  modTemp2=suppressMessages(gee::gee(form2, data=dataTemp1, R=R_alpha, maxiter = 10,
+  modTemp2=suppressMessages(gee::gee(form2, data=dataTemp1, family=family,
+                                     R=R_alpha, maxiter = 10,
                corstr = "fixed", id=Per_id))
   graphs <- list()
   alpha <- stats::coef(modTemp2)[2:(ncol(splines1)+1)]
@@ -238,7 +239,7 @@ CrossGEESP <- function(response,period,treatment,id,
 
   names(graphs) <- c(time, carry)
 
-  model1 <- suppressMessages(gee::gee(form3,data=dataTemp2,
+  model1 <- suppressMessages(gee::gee(form3,data=dataTemp2,family=family,
                                              corstr =correlation, id=Per_id))
   QICmodels <- data.frame(computeqic(model1))
   names(QICmodels) <- "QICs"

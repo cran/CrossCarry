@@ -67,20 +67,18 @@ covariates of the crossover experimental design}
 \item{tol}{the tolerance used in the fitting algorithm.}
 
 \item{niter}{the maximum number of iterations.
-\code{response~period+treatment+carry+time+covar} will be evaluated}
+\code{response~period+treatment+carry+time+covar} will be evaluated.}
 
 \item{Mv}{When correlation is "stat_M_dep", "non_stat_M_dep", or "AR-M"
 then Mv must be specified.}
 }
 \value{
-\code{QIC} The QIC of the model: The model are fitted by \code{geeglm}
-
-\code{model} The model fitted by \code{geeglm}.
-
-\code{Within} The estimated correlation matrix within the period
-with the structure determined by \code{correlation}.
-
-\code{Between} The estimated correlation matrix between periods
+A list with:
+\item{QIC}{The QIC of the model: The model are fitted by \code{geeglm}.}
+\item{model}{The model fitted by \code{geeglm}.}
+\item{Within}{The estimated correlation matrix within the period
+with the structure determined by \code{correlation}}.
+\item{Between}{The estimated correlation matrix between periods.}
 }
 \description{
 Provides a GEE model for the data of a crossover design with S

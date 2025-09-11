@@ -15,9 +15,11 @@
 #' treatment affects equally each of the treatments that are preceded by it,
 #'  and \code{FALSE} = carry-over complex, where the residual effect of the
 #'   treatment affects each of the other treatments differently.
-#' @return \code{data} A data frame with all the variables of
-#' the crossover experimental design and the carryover variables
-#' @return \code{carryover} The new carryover variables
+#' @return A list with:
+#' \item{data}{A data frame with all the variables of the crossover
+#' experimental design and the carryover variables}
+#' \item{carryover}{The names of new carryover variables.}
+#'
 #' @examples
 #' data(Water)
 #' carryover <- createCarry(data=Water,

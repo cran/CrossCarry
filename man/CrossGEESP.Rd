@@ -76,21 +76,22 @@ By default, the base 2 logarithm of the number of observations per period is use
 then Mv must be specified.}
 }
 \value{
-\code{QIC} The QIC of the model: The model are fitted by \code{geeglm}
-
-\code{model} The model fitted by \code{geeglm}.
-
-\code{graphs} The graphs estimated by splines.
-In position 1 the graph of the effect of time appears and from then on,
-it appears one for each carryover effect declared in the \code{carry} option.
-The graphs are built with \code{ggplot2}, therefore they allow manipulation
-of axes and other graphic parameters of that library.
+A list with:
+\item{QIC}{The QIC of the model: The model are fitted by \code{geeglm}.}
+\item{model}{The model fitted by \code{geeglm}.}
+\item{graphs}{The graphs estimated by splines.}
 }
 \description{
 Provides a GEE model for the data of a crossover design with S
 sequences of T periods. There must be at least two observations of each
 experimental unit in each period. The effect of time within period and
 the possible carryover effects are modeled by means of splines.
+}
+\details{
+In position 1 the graph of the effect of time appears and from then on,
+it appears one for each carryover effect declared in the \code{carry} option.
+The graphs are built with \code{ggplot2}, therefore they allow manipulation
+of axes and other graphic parameters of that library.
 }
 \examples{
 data(Arterial)

@@ -40,13 +40,17 @@
 #' @param niter the maximum number of iterations.
 #' @param nodes Number of nodes in the estimation of the splines.
 #' By default, the base 2 logarithm of the number of observations per period is used.
-#' @return \code{QIC} The QIC of the model: The model are fitted by \code{geeglm}
-#' @return \code{model} The model fitted by \code{geeglm}.
-#' @return \code{graphs} The graphs estimated by splines.
+#' @return A list with:
+#' \item{QIC}{The QIC of the model: The model are fitted by \code{geeglm}.}
+#' \item{model}{The model fitted by \code{geeglm}.}
+#' \item{graphs}{The graphs estimated by splines.}
+#'
+#' @details
 #' In position 1 the graph of the effect of time appears and from then on,
 #' it appears one for each carryover effect declared in the \code{carry} option.
 #' The graphs are built with \code{ggplot2}, therefore they allow manipulation
 #' of axes and other graphic parameters of that library.
+#'
 #' @references Cruz Gutierrez NA, Melo OO, Martinez CA. Semiparametric generalized
 #'  estimating equations for repeated measurements in cross-over designs.
 #'   Statistical Methods in Medical Research, 2023;32(5):1033-1050.

@@ -37,12 +37,15 @@
 #' \code{response~period+treatment+carry+time+covar} will be evaluated
 #' @param tol 	the tolerance used in the fitting algorithm.
 #' @param niter the maximum number of iterations.
-#'  \code{response~period+treatment+carry+time+covar} will be evaluated
-#' @return \code{QIC} The QIC of the model: The model are fitted by \code{geeglm}
-#' @return \code{model} The model fitted by \code{geeglm}.
-#' @return \code{Within} The estimated correlation matrix within the period
-#' with the structure determined by \code{correlation}.
-#' @return \code{Between} The estimated correlation matrix between periods
+#'  \code{response~period+treatment+carry+time+covar} will be evaluated.
+#'
+#' @return A list with:
+#' \item{QIC}{The QIC of the model: The model are fitted by \code{geeglm}.}
+#' \item{model}{The model fitted by \code{geeglm}.}
+#' \item{Within}{The estimated correlation matrix within the period
+#' with the structure determined by \code{correlation}}.
+#' \item{Between}{The estimated correlation matrix between periods.}
+#'
 #' @references Cruz, N.A., Melo, O.O. & Martinez, C.A.
 #'  A correlation structure for the analysis of Gaussian and non-Gaussian
 #'   responses in crossover experimental designs with repeated measures.

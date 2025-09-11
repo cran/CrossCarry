@@ -55,15 +55,15 @@ covariates of the crossover experimental design}
 
 \item{formula}{A formula related the response variable with the explanatory
 variables. If it is \code{NULL}, formula
-\code{response~period+treatment+carry+covar} will be evaluated}
+\code{response~period+treatment+carry+covar} will be evaluated.}
 
 \item{Mv}{When correlation is "stat_M_dep", "non_stat_M_dep", or "AR-M"
 then Mv must be specified.}
 }
 \value{
-\code{QIC} The QIC of the models: The model are fitted by \code{geeglm}
-
-\code{model} The model fitted by \code{geeglm}.
+A list with:
+\item{QIC}{The QIC of the model: The model are fitted by \code{geeglm}.}
+\item{model}{The model fitted by \code{geeglm}.}
 }
 \description{
 Provides a GEE model for the data of a crossover design with S

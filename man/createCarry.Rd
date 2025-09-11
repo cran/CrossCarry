@@ -25,10 +25,10 @@ treatment affects equally each of the treatments that are preceded by it,
   treatment affects each of the other treatments differently.}
 }
 \value{
-\code{data} A data frame with all the variables of
-the crossover experimental design and the carryover variables
-
-\code{carryover} The new carryover variables
+A list with:
+\item{data}{A data frame with all the variables of the crossover
+experimental design and the carryover variables}
+\item{carryover}{The names of new carryover variables.}
 }
 \description{
 Create dummy variables associated with first-order

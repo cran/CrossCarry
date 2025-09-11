@@ -31,9 +31,12 @@
 #'   then Mv must be specified.
 #' @param formula A formula related the response variable with the explanatory
 #'  variables. If it is \code{NULL}, formula
-#'  \code{response~period+treatment+carry+covar} will be evaluated
-#' @return \code{QIC} The QIC of the models: The model are fitted by \code{geeglm}
-#' @return \code{model} The model fitted by \code{geeglm}.
+#'  \code{response~period+treatment+carry+covar} will be evaluated.
+#'
+#' @return A list with:
+#' \item{QIC}{The QIC of the model: The model are fitted by \code{geeglm}.}
+#' \item{model}{The model fitted by \code{geeglm}.}
+#'
 #' @references Cruz, N. A., López Pérez, L. A., & Melo, O. O. (2023).
 #' Analysis of cross-over experiments with count data in
 #' the presence of carry-over effects. Statistica Neerlandica,

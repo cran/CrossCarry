@@ -2,15 +2,16 @@ citHeader("To cite CrossCarry in publications use:")
 
 bibentry(
   bibtype    = "Article",
-  title    = "A correlation structure for the analysis of Gaussian and non-Gaussian responses in crossover experimental designs with repeated measures",
+  title    = "CrossCarry: An R package for the analysis of data from a crossover design with GEE",
   author   = c(person("Nelson Alirio", "Cruz Gutierrez", role = c("aut", "cre","cph"),
                       email = "neacruzgu@unal.edu.co"),
                      person("Oscar Orlando", "Melo", role = "aut"),
-                     person("Carlos Alberto", "Martinez", role="aut")),
-  journal  = "Statistical Papers",
-  year     = "2024",
-  volume   = "65",
-  pages    = "263--290",
-  url      = "https://doi.org/10.1007/s00362-022-01391-z"
+                     person("Carlos Alberto", "Martinez", role="aut"),
+                     person("Ricardo", "Alberich", role="aut")),
+  journal  = "SoftwareX",
+  year     = "2026",
+  volume   = "33",
+  pages    = "1--6",
+  url      = "https://doi.org/10.1016/j.softx.2025.102482"
 )
 

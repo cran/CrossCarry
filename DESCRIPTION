@@ -1,7 +1,7 @@
 Package: CrossCarry
 Type: Package
 Title: Analysis of Data from a Crossover Design with GEE
-Version: 1.0.0
+Version: 1.2.0
 Authors@R: c(person("Nelson Alirio", "Cruz Gutierrez", 
                 role = c("aut", "cre","cph"), email = "nelson-alirio.cruz@uib.es"), 
           person("Oscar Orlando", "Melo", role = "aut",
@@ -17,13 +17,13 @@ Depends: R (>= 4.0)
 Imports: dplyr, gee, ggplot2, splines, stats, MASS
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 NeedsCompilation: no
-Packaged: 2025-09-11 07:31:15 UTC; UIB
+Packaged: 2025-12-17 16:43:40 UTC; UIB
 Author: Nelson Alirio Cruz Gutierrez [aut, cre, cph],
   Oscar Orlando Melo [aut],
   Carlos Alberto Martinez [aut],
   Ricardo Alberich Marti [aut]
 Maintainer: Nelson Alirio Cruz Gutierrez <nelson-alirio.cruz@uib.es>
 Repository: CRAN
-Date/Publication: 2025-09-11 08:20:01 UTC
+Date/Publication: 2025-12-17 17:00:08 UTC
